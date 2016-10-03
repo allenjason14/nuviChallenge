@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+  <head>
+    <meta charset="utf-8">
+    <link href="style.css" rel="stylesheet">
+    <title></title>
+  </head>
+  <body ng-controller="mainCtrl">
+
+    <div class = "wrapper">
+        <div ng-repeat="data in retData track by $index">
+          <div class = "solowrapper">
+          <div>
+            <div class="avatar-container"><img src="{{data.actor_avator}}" class="avatar"></div>
+            <div class="username">{{data.actor_username}}</div>
+            <div class="description">  {{data.actor_description}}</div>
+            <p class="date"> {{data.activity_date}}</p>
+            <span class="provider"> {{data.provider}} </span>
+        </div>
+        <div class="messagecontainer">
+          <div ng-if="data.activity_attachment_type !== null" class="photoplacer"> <img src="{{data.activity_message}}" class="photoplacement"></div>
+            <p ng-if="data.activity_attachment_type === null" class="textplacer">{{data.activity_message}} <br></p>
+            <div class="statcontainer">
+              <div class="likeComment">
+                <button class = "reply" ng-click="openCommentBox($index)">Comment</button>
+                <button ng-click="addLike($index)">Like</button>
+            </div>
+                <div class="spacer">
+                  <span> {{data.activity_likes}} Likes -</span>
+                  <span> {{data.activity_shares}} Shares -</span>
+                  <span> {{data.activity_comments}} Comments -</span>
+                  <span ng-click="toggleVisibility($index)" ng-class ="{'active': data.isVisible === true }" ng-class="{'inactive': data.isVisible === false}" class="seeMore">See More -</span>
+                  <span ng-click=toggleInvisibility($index) ng-class ="{'active': data.isVisible === false }" ng-class="{'inactive': data.isVisible === true}" class="seeMore">See Less</span>
+              </div>
+          </div>
+        </div>
+          <textarea ng-model="retData[$index].newComment" placeholder="Insert a Comment" class="inputbox" ng-class = "{'hidden': data.commentBox === false }" ng-class="{'isVisible': data.commentBox === true}"></textarea>
+          <div class = "buttonContainer">
+            <button ng-click="addComment($index, retData[$index].newComment)" class="commentSubmit" ng-class = "{'hidden': data.commentBox === false }" ng-class="{'isVisible': data.commentBox === true}" >Comment</button>
+            <button ng-click="closeCommentBox($index)" class="commentSubmit" ng-class = "{'hidden': data.commentBox === false }" ng-class="{'isVisible': data.commentBox === true}" >Close</button>
+          </div>
+          <div class="commentBoxHolder">
+            <div ng-repeat="comment in data.comment track by $index" class="commentHolder">
+              <p class = "comment">{{comment}}</p>
+              <div class="gap"></div>
+            </div>
+          </div>
+          <div class="extraInfo" ng-class ="{'hidden': data.isVisible === false }" ng-class="{'isVisible': data.isVisible === true}">
+
+              <div class="metadata">
+                <p> <strong>Name:</strong> {{data.actor_name}}</p>
+                <p> <strong>Link:</strong> <a href = "{{data.actor_url}}">{{data.actor_url}}</a></p>
+                <p> <strong> Activity Sentiment: </strong> {{data.activity_sentiment}} </p>
+              </div>
+              <div class="metadata">
+                <p> <strong> Activity Latitude:</strong> {{data.activity_latitude}}</p>
+                <p> <strong> Activity Longitude:</strong> {{data.activity_longitude}}</p>
+              </div>
+              <div class = "metadata">
+                <p> <strong> Activity Attachment:</strong> <a href = "{{data.activity_attachment}}">{{data.activity_attachment}} </a> </p>
+                <p> <strong> Activity Attachment Type: </strong> {{data.activity_attachment_type}} </p>
+              </div>
+              <!-- <button ng-click=toggleVisibility($index)>See Less</button> -->
+          </div>
+          <br>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.7/angular.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.js"></script>
+    <script src="app.js"></script>
+    <script src="mainCtrl.js"></script>
+    <script src="mainSrvc.js"></script>
+  </body>
+</html>
